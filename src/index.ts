@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectDB } from "./utils/connectToDb.js";
 import userRoutes from "./routes/userRoutes.js"
 import salaryRoutes from "./routes/salaryoute.js"
+// import { updateSalaryById } from "../controllers/salaryController.js";
 
 dotenv.config();
 

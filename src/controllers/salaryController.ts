@@ -8,7 +8,9 @@ export const uploadSalaryExcel = async (req: Request, res: Response) => {
     const file = req.file;
 
     if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({
+        message: "No file uploaded"
+      });
     }
 
     // Save uploaded file details
@@ -19,14 +21,14 @@ export const uploadSalaryExcel = async (req: Request, res: Response) => {
     });
 
     // Read Excel and parse data
-    const workbook = xlsx.readFile(file.path);
+    const workbook = xlsx.readFile(file.path);    //read exalfile and convert this workbook
     console.log("Workbook loaded:");
 
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];  //choce the first file name
     console.log("Selected sheet object:");
 
-    const rows = xlsx.utils.sheet_to_json(sheet, { defval: "" });
-    console.log("Parsed rows from Excel:");
+    const rows = xlsx.utils.sheet_to_json(sheet, { defval: "" });   //convert sheet in to json object
+    console.log("Parsed rows from Excel:");                            //defval use no velue cal
 
 
     // Insert all rows directly into salaryModel
@@ -47,7 +49,7 @@ export const getAllEmpSalaries = async (req: Request, res: Response) => {
   try {
     const result = await salaryModel.find();
     if (!result) {
-      return res.status(200).json({
+      return res.status(404).json({
         message: "No reslt found"
       })
     }
@@ -61,7 +63,7 @@ export const getAllEmpSalaries = async (req: Request, res: Response) => {
 
 };
 
-// put method
+// put method getSalaryById
 export const getSalaryById = async (req: Request, res: Response) => {
   try {
     const salaryId = req.params.id;
@@ -92,10 +94,11 @@ export const updateSalaryById = async (req: Request, res: Response) => {
       })
     }
     return res.status(200).json({
-      message: "update"
+      message: "salary successfully"
     })
-  } catch(error){
+  } catch (error) {
     console.log("server error")
   }
-  
-}
+
+};
+
