@@ -9,9 +9,9 @@ router.post("/upload", salaryUpload.single("file"), uploadSalaryExcel);
 router.get("/",getAllEmpSalaries);
 router.get("/:id",getSalaryById);
 router.put("/update/:id", updateSalaryById);
+router.delete("/deleteSalary/:id");
 // router.put
 
 
 export default router;
 
-//update salary by id

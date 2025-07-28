@@ -102,3 +102,26 @@ export const updateSalaryById = async (req: Request, res: Response) => {
 
 };
 
+//deletesalarybyid
+export const deleteSalaryById = async (req: Request, res: Response) => {
+  try {
+    const salaryId = req.params.id;
+    const result = await salaryModel.findByIdAndDelete(salaryId);
+
+    if (!result) {
+      return res.status(404).json({
+        message: "Salary record not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Salary deleted successfully"
+    });
+  } catch (error) {
+    console.error("Server error:", error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+};
+
