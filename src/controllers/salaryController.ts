@@ -1,7 +1,19 @@
 import { Request, Response } from "express";
 import xlsx from "xlsx";
+import nodemailer from "nodemailer"
 import salaryModel from "../models/salaryModel.js";
 import salaryFileModel from "../models/salaryFileModel.js";
+export interface ISalary extends Document {   //interface is tyoeof typexcript extetends is mongoosdbrecord
+  employeeId?: string; 
+  email: string;
+  salaryMonth: string;
+  salaryAmount: number;
+  dateReceived: Date;
+  description: string;
+  advances: string;
+  netSalary: number;
+  status: string;
+}
 
 export const uploadSalaryExcel = async (req: Request, res: Response) => {
   try {
@@ -27,7 +39,7 @@ export const uploadSalaryExcel = async (req: Request, res: Response) => {
     const sheet = workbook.Sheets[workbook.SheetNames[0]];  //choce the first file name
     console.log("Selected sheet object:");
 
-    const rows = xlsx.utils.sheet_to_json(sheet, { defval: "" });   //convert sheet in to json object
+    const rows = xlsx.utils.sheet_to_json(sheet, { defval: "" });   //convert sheet in to json object and save data and use this data
     console.log("Parsed rows from Excel:");                            //defval use no velue cal
 
 
@@ -94,7 +106,7 @@ export const updateSalaryById = async (req: Request, res: Response) => {
       })
     }
     return res.status(200).json({
-      message: "salary successfully"
+      message: "salary successfully update"
     })
   } catch (error) {
     console.log("server error")
@@ -125,3 +137,44 @@ export const deleteSalaryById = async (req: Request, res: Response) => {
   }
 };
 
+// // sand salaries emial to all employee
+
+export const sendSalariesToAll = async (req: Request, res: Response) => {
+  try {
+    // No need to populate employeeId since email is in salary directly
+    const salaries = await salaryModel.find();
+    console.log(salaries);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "gulbazkachoo3032@gmail.com",  // Your email
+        pass: "adxb pqzw xqvo avhz",          // App password (not regular password)
+      },
+    });
+
+    for (const salary of salaries) {
+      const email = salary.email; //  Direct access from salary doc
+
+      if (!email) {
+        console.warn(`Skipping email for salary ID: ${salary._id} - no email found`);
+        continue;
+      }
+
+      const subject = `Salary Slip - ${salary.salaryMonth}`;
+      const message = `Dear employee,\n\nYour salary for ${salary.salaryMonth} that is ${salary.salaryAmount} has been processed.\n\nRegards,\nHR`;
+
+      await transporter.sendMail({
+        from: '"HR Team" <gulbazkachoo3032@gmail.com>', //  Same as your Gmail
+        to: email,
+        subject,
+        text: message,
+      });
+    }
+
+    res.status(200).json({ message: "Emails sent successfully." });
+  } catch (err) {
+    console.error("Email Error:", err);
+    res.status(500).json({ message: "Failed to send emails." });
+  }
+};

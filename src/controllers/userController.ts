@@ -15,7 +15,9 @@ export const createUser = async(req:Request, res:Response) =>{
     const image = req.file ? `${req.protocol}://${req.get("host")}/uploads/profile/${req.file.filename}` : undefined;
 
     if(!name || !email || !password){
-      return res.status(400).json({ message: "all fields are required"});
+      return res.status(400).json({
+         message: "all fields are required"
+        });
     } 
 
     const existingUser = await userModel.findOne({email});
@@ -36,7 +38,9 @@ export const createUser = async(req:Request, res:Response) =>{
   }
   catch(error){
     console.error("error creating user", error)
-    return res.status(500).json({message: "internal server error", error})
+    return res.status(500).json({
+      message: "internal server error",
+    })
   }
 }
 
@@ -44,14 +48,13 @@ export const createUser = async(req:Request, res:Response) =>{
 export const getUsers = async(req:Request, res:Response) =>{
   try {
     const users = await userModel.find();
-    return res.status(200).json({message: "users fetched successfully", count:users.length, users})
+    return res.status(200).json({message: "users fetched successfully", 
+      count:users.length, users})
   } catch (error) {
     console.error("error fetching users", error);
     return res.status(500).json({message: "internal server error", error})
   }
 }
-
-
 
 // delete
 export const delUser = async (req: Request, res: Response) => {

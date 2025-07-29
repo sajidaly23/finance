@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
 import mongoose from "mongoose";
 
-export interface ISalary extends Document {
-  employeeId?: string; // ✅ optional
+export interface ISalary extends Document {   //interface is tyoeof typexcript extetends is mongoosdbrecord
+  employeeId?: string; 
   email: string;
   salaryMonth: string;
   salaryAmount: number;
