@@ -26,7 +26,7 @@ export const uploadAndSendSalaries = async (req: Request, res: Response) => {
       });
     }
 
-    // Save uploaded file details
+    
     await salaryFileModel.create({
       originalName: file.originalname,
       url: `${req.protocol}://${req.get("host")}/uploads/salary/${file.filename}`,
@@ -44,6 +44,10 @@ export const uploadAndSendSalaries = async (req: Request, res: Response) => {
     console.log("Parsed rows from Excel");
 
     // Insert rows into DB
+
+
+
+    
     const insertedSalaries = await salaryModel.insertMany(rows);
 
     // Setup email transporter
