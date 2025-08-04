@@ -1,6 +1,7 @@
 import express from "express";
 import {createUser, getUsers, delUser, updateUser, loginUser, deleteAllUsers, getUserById} from "../controllers/userController.js";
 import { uploads } from "../middlewares/multerMiddleware.js";
+// import { createUser } from "../controllers/userController.js";
 
 const router = express.Router();
 

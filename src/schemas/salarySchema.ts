@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const salaryValidation = z.object({
+export const salaryValidation = z.object({   //ZOD USE TO ERROR HANDALING
   email: z.string().email(),
   salaryMonth: z.string(),
   salaryAmount: z.number(),

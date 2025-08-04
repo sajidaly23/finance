@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import { createUser } from "../controllers/userController.js"
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
